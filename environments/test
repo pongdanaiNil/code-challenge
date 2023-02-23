@@ -1,0 +1,7 @@
+POSTGRES_HOST=code-challenge-db
+POSTGRES_PORT=5432
+POSTGRES_DB=code_challenge_db_test
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=postgres
+
+SIDEKIQ_REDIS_URL=redis://redis:6379/0

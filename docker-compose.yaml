@@ -1,0 +1,52 @@
+version: '3.9'
+
+volumes:
+  code-challenge-datastore:
+
+networks:
+  default:
+    name: code-challenge
+
+services:
+  code-challenge-db:
+    image: postgres:15-alpine
+    container_name: code-challenge-db
+    env_file: environments/development
+    volumes:
+      - code-challenge-datastore:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    restart: always
+
+  code-challenge-api:
+    build: .
+    image: code-challenge-api
+    container_name: code-challenge-api
+    env_file: environments/development
+    depends_on:
+      - code-challenge-db
+    volumes:
+      - .:/app
+    ports:
+      - 4000:4000
+    command: ["rails", "s", "-p", "4000", "-b", "0.0.0.0"]
+    restart: always
+
+  redis:
+    image: redis:7.0-alpine
+    container_name: code-challenge-redis
+    ports:
+      - 6379:6379
+    restart: always
+
+  sidekiq:
+    build: .
+    image: code-challenge-api
+    container_name: code-challenge-sidekiq
+    env_file: environments/development
+    depends_on:
+      - redis
+    volumes:
+      - .:/app
+    command: bundle exec sidekiq
+    restart: always
