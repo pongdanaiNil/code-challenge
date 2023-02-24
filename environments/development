@@ -1,3 +1,5 @@
+ALLOW_ORIGINS=localhost:3000
+
 POSTGRES_HOST=code-challenge-db
 POSTGRES_PORT=5432
 POSTGRES_DB=code_challenge_db
