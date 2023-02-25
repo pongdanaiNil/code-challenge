@@ -30,4 +30,4 @@ logs:
 	docker logs -f code-challenge-api
 
 rspec:
-	bundle exec rspec spec
+	docker exec code-challenge-api bundle exec rspec spec

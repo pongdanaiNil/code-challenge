@@ -1,3 +1,5 @@
+ALLOW_ORIGINS=localhost:3000
+
 POSTGRES_HOST=code-challenge-db
 POSTGRES_PORT=5432
 POSTGRES_DB=code_challenge_db_test
@@ -5,3 +7,6 @@ POSTGRES_USER=postgres
 POSTGRES_PASSWORD=postgres
 
 SIDEKIQ_REDIS_URL=redis://redis:6379/0
+
+CLIENT_ID=C89Gr4QJeoG489d3
+CLIENT_SECRET=kOId0w36TJYBd90i

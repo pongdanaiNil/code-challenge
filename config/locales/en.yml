@@ -30,4 +30,13 @@
 # available at https://guides.rubyonrails.org/i18n.html.
 
 en:
-  hello: "Hello world"
+  ok: "ok"
+  created: "created"
+  bad_request: "bad request"
+  unauthorized: "unauthorized"
+  forbidden: "forbidden"
+  not_found: "not found"
+
+  user:
+    success:
+      created: "User has been created."
