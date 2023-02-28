@@ -23,7 +23,7 @@ RSpec.describe "Api::V1::Keywords", type: :request do
     end
 
     it 'should get all keywords correctly with pagination' do
-      get '/api/v1/keywords', headers: headers, params: { limit: 3, page: 1 }
+      get '/api/v1/keywords', headers: headers, params: { limit: 3, page: 0 }
 
       result = JSON.parse(response.body)
       expect(response.status).to eq(200)
@@ -62,6 +62,37 @@ RSpec.describe "Api::V1::Keywords", type: :request do
 
     it 'should render 401 when authorize header' do
       get "/api/v1/keywords/#{keyword.id}"
+
+      expect(response.status).to eq(401)
+    end
+  end
+
+  describe "POST /upload" do
+    let!(:csv)  { Rack::Test::UploadedFile.new('public/test.csv', '.csv') }
+
+    it 'should upload csv file successfully' do
+      post "/api/v1/keywords/upload", headers: headers, params: {
+        csv_file: csv
+      }
+
+      result = JSON.parse(response.body)
+      expect(response.status).to eq(200)
+      expect(result['message']).to eq(I18n.t('keyword.success.uploaded'))
+      expect(result['job_id'].present?).to eq(true)
+    end
+    
+    it 'should render 400 when no csv file in params' do
+      post "/api/v1/keywords/upload", headers: headers, params: {}
+
+      result = JSON.parse(response.body)
+      expect(response.status).to eq(400)
+      expect(result['message']).to eq(I18n.t('keyword.error.no_file'))
+    end
+
+    it 'should render 401 when authorize header' do
+      post "/api/v1/keywords/upload", params: {
+        csv_file: csv
+      }
 
       expect(response.status).to eq(401)
     end

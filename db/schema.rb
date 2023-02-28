@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_02_27_085647) do
+ActiveRecord::Schema[7.0].define(version: 2023_02_28_173727) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -66,8 +66,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_27_085647) do
   create_table "results", force: :cascade do |t|
     t.integer "adwords_advertisers_count", default: 0, null: false
     t.integer "links_count", default: 0, null: false
-    t.integer "total_search_results", default: 0, null: false
-    t.float "search_time", default: 0.0, null: false
+    t.string "total_search_results", default: "0", null: false
     t.text "html_code", default: "", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

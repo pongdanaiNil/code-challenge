@@ -12,11 +12,13 @@ Rails.application.routes.draw do
       devise_for :users, skip: :all
       resources :users, only: [] do
         collection do
-          get :me
           post :registration
         end
       end
       resources :keywords, only: %i[index show update destroy] do
+        collection do
+          post :upload
+        end
       end
     end
   end

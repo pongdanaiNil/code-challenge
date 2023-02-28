@@ -7,7 +7,7 @@ class ApplicationController < ActionController::API
   end
 
   def page
-    (params[:page] || 1).to_i
+    (params[:page] || 0).to_i
   end
 
   def limit
@@ -15,7 +15,7 @@ class ApplicationController < ActionController::API
   end
 
   def offset
-    (page - 1) * limit
+    page * limit
   end
 
   def count(records)

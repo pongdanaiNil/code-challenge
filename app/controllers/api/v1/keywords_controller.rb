@@ -1,9 +1,13 @@
 class Api::V1::KeywordsController < ApplicationController
   before_action :find_by_id,          only: %i[show update destroy]
-  before_action :keyword_params,      only: %i[update]
+  before_action :keyword_params,      only: %i[index update]
 
   def index
-    keyword = Keyword.select(*columns).limit(limit).offset(offset).as_json
+    keyword = Keyword.where("keyword LIKE ?", "%#{keyword_params[:keyword]}%")
+                      .select(*columns)
+                      .limit(limit)
+                      .offset(offset)
+                      .as_json
 
     render_ok(count: count(keyword), data: keyword)
   end
@@ -31,8 +35,13 @@ class Api::V1::KeywordsController < ApplicationController
     end
   end
 
-  def upload_csv
-    pp "csv_params", csv_params
+  def upload
+    return render_bad_request(message: I18n.t('keyword.error.no_file')) if csv_params[:csv_file].blank?
+
+    csv_contens = CSV.read(csv_params[:csv_file])
+    job_id = UploadKeywordsJob.perform_async(csv_contens[0])
+
+    render_ok(message: I18n.t('keyword.success.uploaded'), job_id: job_id)
   end
 
   private

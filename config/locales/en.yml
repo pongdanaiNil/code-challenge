@@ -45,3 +45,6 @@ en:
     success:
       updated: "The keyword has been updated."
       destroyed: "The keyword has been removed."
+      uploaded: "The CSV file is being processed."
+    error:
+      no_file: "Upload operations require a CSV file."
