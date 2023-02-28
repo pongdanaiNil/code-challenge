@@ -1,6 +1,7 @@
 files = %w[
   create_oauth_application
   create_users
+  create_keywords
 ]
 
 p '----------------- Start -----------------'

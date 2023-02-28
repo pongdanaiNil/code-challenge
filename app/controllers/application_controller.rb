@@ -1,8 +1,25 @@
 class ApplicationController < ActionController::API
+  wrap_parameters format: :json
   before_action :doorkeeper_authorize!
 
   def strip_params(values)
     values.each_value { |value| value.strip! if value.instance_of?(String) }
+  end
+
+  def page
+    (params[:page] || 1).to_i
+  end
+
+  def limit
+    (params[:limit] || 10).to_i
+  end
+
+  def offset
+    (page - 1) * limit
+  end
+
+  def count(records)
+    (records.dig(0, :count) || records.dig(0, 'count')).to_i
   end
 
   def current_user

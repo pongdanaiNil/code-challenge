@@ -16,6 +16,8 @@ Rails.application.routes.draw do
           post :registration
         end
       end
+      resources :keywords, only: %i[index show update destroy] do
+      end
     end
   end
 end

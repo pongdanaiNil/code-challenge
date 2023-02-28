@@ -10,9 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_02_24_101039) do
+ActiveRecord::Schema[7.0].define(version: 2023_02_27_085647) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "keywords", force: :cascade do |t|
+    t.text "keyword", default: "", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["keyword"], name: "index_keyword_on_keyword"
+  end
 
   create_table "oauth_access_grants", force: :cascade do |t|
     t.bigint "resource_owner_id", null: false
@@ -56,6 +63,18 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_24_101039) do
     t.index ["uid"], name: "index_oauth_applications_on_uid", unique: true
   end
 
+  create_table "results", force: :cascade do |t|
+    t.integer "adwords_advertisers_count", default: 0, null: false
+    t.integer "links_count", default: 0, null: false
+    t.integer "total_search_results", default: 0, null: false
+    t.float "search_time", default: 0.0, null: false
+    t.text "html_code", default: "", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "keyword_id"
+    t.index ["keyword_id"], name: "index_results_on_keyword_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "name", default: "", null: false
     t.string "email", default: "", null: false
@@ -71,4 +90,5 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_24_101039) do
 
   add_foreign_key "oauth_access_grants", "oauth_applications", column: "application_id"
   add_foreign_key "oauth_access_tokens", "oauth_applications", column: "application_id"
+  add_foreign_key "results", "keywords"
 end

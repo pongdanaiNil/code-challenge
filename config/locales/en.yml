@@ -40,3 +40,8 @@ en:
   user:
     success:
       created: "User has been created."
+
+  keyword:
+    success:
+      updated: "The keyword has been updated."
+      destroyed: "The keyword has been removed."
