@@ -6,19 +6,65 @@ application up and running.
 Things you may want to cover:
 
 * Ruby version
+  * 3.2.1
 
 * System dependencies
+  * Docker and Docker compose
+  
+* Services
+  * Four services will be running in Docker containers.
+    * Rails server
+    * Postgresql Database
+    * Redis
+    * Sidekiq
 
-* Configuration
+* Make command
+  * Start all service
+    ```
+    make start
+    ```
+  * Stop all service
+    ```
+    make stop
+    ```
+  * Restart all service
+    ```
+    make restart
+    ```
+  * Rebuild rails server service
+    ```
+    make rebuild
+    ```
+  * Run rails console in rails server docker contrainer
+    ```
+    make c
+    ```
+  * Run command in rails server docker contrainer
+    ```
+    make exec cmd="command_to_run"
+    ```
+  * Log rails server
+    ```
+    make log
+    ```
+  * Run rspec
+    ```
+    make rspec
+    ```
 
-* Database creation
+* Database creation and initialization
+  * Create and run seed from Make file command
+    ```
+    make setup
+    ```
+  * Reset database
+    ```
+    make reset
+    ```
 
-* Database initialization
 
 * How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+  * Run rspec
+    ```
+    make rspec
+    ```
