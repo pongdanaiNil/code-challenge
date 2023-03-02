@@ -39,8 +39,9 @@ class Api::V1::KeywordsController < ApplicationController
     return render_bad_request(message: I18n.t('keyword.error.no_file')) if csv_params[:csv_file].blank?
 
     csv_contens = CSV.read(csv_params[:csv_file]).flatten(2)
-    job_id = UploadKeywordsJob.perform_async(csv_contens)
+    return render_bad_request(message: I18n.t('keyword.error.exceed_length')) if csv_contens.count > 100
 
+    job_id = UploadKeywordsJob.perform_async(csv_contens)
     render_ok(message: I18n.t('keyword.success.uploaded'), job_id: job_id)
   end
 
