@@ -48,3 +48,4 @@ en:
       uploaded: "The CSV file is being processed."
     error:
       no_file: "Upload operations require a CSV file."
+      exceed_length: "The CSV file must contain less than or equal to 100 words."
