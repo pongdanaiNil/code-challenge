@@ -2,9 +2,8 @@ class UploadKeywordsJob
   include Sidekiq::Job
 
   def perform(*args)
-    # process only 100 keywords
-    args[0][0..99].each do |keyword|
-      Keyword.create(keyword: keyword) unless Keyword.where(keyword: keyword).exists?
+    args[0].each do |keyword|
+      Keyword.create(keyword: keyword.strip) unless Keyword.where(keyword: keyword.strip).exists?
     end
   end
 end
