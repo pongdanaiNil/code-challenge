@@ -68,7 +68,8 @@ RSpec.describe "Api::V1::Keywords", type: :request do
   end
 
   describe "POST /upload" do
-    let!(:csv)  { Rack::Test::UploadedFile.new('public/test.csv', '.csv') }
+    let!(:csv)      { Rack::Test::UploadedFile.new('public/test.csv', '.csv') }
+    let!(:csv_101)  { Rack::Test::UploadedFile.new('public/test101.csv', '.csv') }
 
     it 'should upload csv file successfully' do
       post "/api/v1/keywords/upload", headers: headers, params: {
@@ -79,6 +80,16 @@ RSpec.describe "Api::V1::Keywords", type: :request do
       expect(response.status).to eq(200)
       expect(result['message']).to eq(I18n.t('keyword.success.uploaded'))
       expect(result['job_id'].present?).to eq(true)
+    end
+
+    it 'should render 400 when csv file contain more than 100 keywords ' do
+      post "/api/v1/keywords/upload", headers: headers, params: {
+        csv_file: csv_101
+      }
+
+      result = JSON.parse(response.body)
+      expect(response.status).to eq(400)
+      expect(result['message']).to eq(I18n.t('keyword.error.exceed_length'))
     end
     
     it 'should render 400 when no csv file in params' do
