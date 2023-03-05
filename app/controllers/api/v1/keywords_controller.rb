@@ -1,6 +1,9 @@
+require 'csv_file_validator'
+
 class Api::V1::KeywordsController < ApplicationController
   before_action :find_by_id,          only: %i[show update destroy]
   before_action :keyword_params,      only: %i[index update]
+  before_action :validate_csv_file,   only: %i[upload]
 
   def index
     keyword = Keyword.where("keyword LIKE ?", "%#{keyword_params[:keyword]}%")
@@ -36,12 +39,7 @@ class Api::V1::KeywordsController < ApplicationController
   end
 
   def upload
-    return render_bad_request(message: I18n.t('keyword.error.no_file')) if csv_params[:csv_file].blank?
-
-    csv_contens = CSV.read(csv_params[:csv_file]).flatten(2)
-    return render_bad_request(message: I18n.t('keyword.error.exceed_length')) if csv_contens.count > 100
-
-    job_id = UploadKeywordsJob.perform_async(csv_contens)
+    job_id = UploadKeywordsJob.perform_async(@csv_contens)
     render_ok(message: I18n.t('keyword.success.uploaded'), job_id: job_id)
   end
 
@@ -62,5 +60,10 @@ class Api::V1::KeywordsController < ApplicationController
 
   def columns
     ['id, keyword, count(*) over () as count']
+  end
+
+  def validate_csv_file
+    @validator_errors, @csv_contens = CsvFileValidator.validate(csv_params[:csv_file])
+    render_bad_request(message: @validator_errors) if @validator_errors.present?
   end
 end
