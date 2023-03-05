@@ -24,12 +24,18 @@ class SearchKeywordJob
                         query: params,
                         headers: headers)
 
-    data[:html_code] = response.body             
+    html_code = response.body.dup
     doc = Nokogiri::HTML(response.body)
 
     attrs = doc.xpath('//a/@href')
     links = attrs.map {|attr| attr.value}
     data[:links_count] = links.count
+
+    html_code.gsub!('href="/search?', 'href="https://www.google.com/search?')
+    html_code.gsub!('content="/', 'content="https://www.google.com/')
+    html_code.gsub!('src="/images', 'src="https://www.google.com/images')
+    
+    data[:html_code] = html_code 
 
     total_results_and_search_time_node  = doc.css("div#result-stats").children.text
     data[:total_search_results] = total_results_and_search_time_node
