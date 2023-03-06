@@ -38,6 +38,10 @@ gem "rack-cors"
 
 # Customize
 gem 'sidekiq'
+gem 'devise'
+gem 'doorkeeper', '~> 5.6.5'
+gem 'nokogiri'
+gem 'httparty'
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
